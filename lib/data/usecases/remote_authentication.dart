@@ -4,12 +4,13 @@ import 'package:clean_arch_flutter/domain/entities/entities.dart';
 import 'package:clean_arch_flutter/domain/helpers/helpers.dart';
 import 'package:clean_arch_flutter/domain/usecases/usecases.dart';
 
-class RemoteAuthentication {
+class RemoteAuthentication implements Authentication {
   final HttpClient httpClient;
   final String url;
 
   RemoteAuthentication({required this.httpClient, required this.url});
 
+  @override
   Future<AccountEntity> auth(AuthenticationParams params) async {
     try {
       final httpResponse = await httpClient.request(
