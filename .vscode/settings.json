@@ -1,6 +1,7 @@
 {
   "conventionalCommits.scopes": [
     "domain",
-    "data"
+    "data",
+    "core"
   ]
 }
