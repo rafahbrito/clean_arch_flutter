@@ -1,3 +1,4 @@
+import 'package:clean_arch_flutter/core/configs/assets/app_images.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -5,7 +6,12 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
+    return Scaffold(
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(image: AssetImage(AppImages.splashBg)),
+        ),
+      ),
+    );
   }
 }

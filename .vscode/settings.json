@@ -2,6 +2,7 @@
   "conventionalCommits.scopes": [
     "domain",
     "data",
-    "core"
+    "core",
+    "ui"
   ]
 }
