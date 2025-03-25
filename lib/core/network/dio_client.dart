@@ -1,4 +1,6 @@
+import 'package:clean_arch_flutter/core/constants/api_url.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class DioClient {
   late final Dio _client;
@@ -6,7 +8,11 @@ class DioClient {
   DioClient()
     : _client = Dio(
         BaseOptions(
-          headers: {'Content-Type': 'application/json'},
+          baseUrl: ApiUrl.baseUrl,
+          headers: {
+            'accept': 'application/json',
+            'Authorization': 'Bearer ${dotenv.env['API_KEY']}',
+          },
           responseType: ResponseType.json,
           sendTimeout: const Duration(seconds: 10),
           receiveTimeout: const Duration(seconds: 10),
