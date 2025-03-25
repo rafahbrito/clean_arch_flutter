@@ -1,11 +1,19 @@
 import 'package:clean_arch_flutter/core/configs/navigation/app_navigation.dart';
+import 'package:clean_arch_flutter/data/models/auth/signin_request_params.dart';
+import 'package:clean_arch_flutter/domain/usecases/auth/signin.dart';
+import 'package:clean_arch_flutter/service_locator.dart';
 import 'package:clean_arch_flutter/ui/screens/auth/sign_up.dart';
+import 'package:clean_arch_flutter/ui/screens/home/home.dart';
 import 'package:clean_arch_flutter/ui/widgets/async_button/button.dart';
+import 'package:clean_arch_flutter/ui/widgets/snackbar_error/snackbar_error.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class SignInScreen extends StatelessWidget {
-  const SignInScreen({super.key});
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  SignInScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +30,19 @@ class SignInScreen extends StatelessWidget {
             _passwordField(),
             SizedBox(height: 60),
             AsyncButton(
-              onPressed: () async {},
-              onSuccess: () {},
-              onFailure: (error) {},
+              onPressed:
+                  () async => sl<SigninUseCase>().execute(
+                    params: SigninRequestParams(
+                      email: _emailController.text,
+                      password: _passwordController.text,
+                    ),
+                  ),
+              onSuccess: () {
+                AppNavigator.pushAndRemove(context, HomeScreen());
+              },
+              onFailure: (error) {
+                SnackbarError.errorMessage(error, context);
+              },
             ),
             SizedBox(height: 20),
             _signUpText(context),
@@ -43,6 +61,7 @@ class SignInScreen extends StatelessWidget {
 
   Widget _emailField() {
     return TextField(
+      controller: _emailController,
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(hintText: 'Email'),
     );
@@ -50,6 +69,7 @@ class SignInScreen extends StatelessWidget {
 
   Widget _passwordField() {
     return TextField(
+      controller: _passwordController,
       obscureText: true,
       decoration: InputDecoration(
         hintText: 'Senha',

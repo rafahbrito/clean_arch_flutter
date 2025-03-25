@@ -1,11 +1,19 @@
 import 'package:clean_arch_flutter/core/configs/navigation/app_navigation.dart';
+import 'package:clean_arch_flutter/data/models/auth/signup_request_params.dart';
+import 'package:clean_arch_flutter/domain/usecases/auth/signup.dart';
+import 'package:clean_arch_flutter/service_locator.dart';
 import 'package:clean_arch_flutter/ui/screens/auth/sign_in.dart';
+import 'package:clean_arch_flutter/ui/screens/home/home.dart';
 import 'package:clean_arch_flutter/ui/widgets/async_button/button.dart';
+import 'package:clean_arch_flutter/ui/widgets/snackbar_error/snackbar_error.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class SignUpScreen extends StatelessWidget {
-  const SignUpScreen({super.key});
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  SignUpScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +30,20 @@ class SignUpScreen extends StatelessWidget {
             _passwordField(),
             SizedBox(height: 60),
             AsyncButton(
-              onPressed: () async {},
-              onSuccess: () {},
-              onFailure: (error) {},
+              title: "Criar",
+              onPressed:
+                  () async => sl<SignupUseCase>().execute(
+                    params: SignupRequestParams(
+                      email: _emailController.text,
+                      password: _passwordController.text,
+                    ),
+                  ),
+              onSuccess: () {
+                AppNavigator.pushAndRemove(context, HomeScreen());
+              },
+              onFailure: (error) {
+                SnackbarError.errorMessage(error, context);
+              },
             ),
             SizedBox(height: 20),
             _signInText(context),
@@ -43,17 +62,22 @@ class SignUpScreen extends StatelessWidget {
 
   Widget _emailField() {
     return TextField(
+      controller: _emailController,
       keyboardType: TextInputType.emailAddress,
-      decoration: InputDecoration(hintText: 'Email'),
+      decoration: const InputDecoration(hintText: 'Email'),
     );
   }
 
   Widget _passwordField() {
     return TextField(
+      controller: _passwordController,
       obscureText: true,
       decoration: InputDecoration(
         hintText: 'Senha',
-        suffixIcon: IconButton(onPressed: () {}, icon: Icon(Icons.visibility)),
+        suffixIcon: IconButton(
+          onPressed: () {},
+          icon: const Icon(Icons.visibility),
+        ),
       ),
     );
   }

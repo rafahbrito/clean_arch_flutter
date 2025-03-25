@@ -7,7 +7,7 @@ class AppTheme {
     scaffoldBackgroundColor: AppColors.background,
     brightness: Brightness.dark,
     snackBarTheme: const SnackBarThemeData(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.secondBackground,
       contentTextStyle: TextStyle(color: Colors.white),
     ),
     inputDecorationTheme: InputDecorationTheme(
